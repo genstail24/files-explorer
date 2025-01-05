@@ -1,12 +1,11 @@
-import { swagger } from "@elysiajs/swagger";
-import { Elysia } from "elysia";
+import swagger from "@elysiajs/swagger";
+import { Elysia, t } from "elysia";
+import routes from "./routes";
 
 const app = new Elysia()
-
-app.use(swagger());
-app.get("/", () => "Hello Elysia")
-
-app
+  .use(swagger())
+  .use(routes)
+  .get("/", () => "Hello Elysia")
   .listen(3000);
 
 console.log(
