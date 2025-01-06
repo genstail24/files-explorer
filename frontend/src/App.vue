@@ -34,7 +34,7 @@
           <!-- Search Bar -->
           <div class="mb-4">
             <input
-              v-model="fileSearch"
+              v-model="searchQuery"
               type="text"
               placeholder="Search Files"
               class="w-full px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-800 dark:text-white"
@@ -101,13 +101,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watchEffect } from "vue";
+import { ref, computed, onMounted, watchEffect, watch } from "vue";
 import FolderItem from "./components/FolderItem.vue";
 
 const isDarkMode = ref(false);
 const folders = ref([]);
 const selectedFolder = ref(null);
-const fileSearch = ref("");
+const searchQuery = ref("");
 const filteredFilesAndFolders = ref([]);
 
 onMounted(() => {
@@ -120,24 +120,28 @@ const toggleDarkMode = () => {
   isDarkMode.value = !isDarkMode.value;
 };
 
-watchEffect(async () => {
-  if (!selectedFolder.value) {
-    filteredFilesAndFolders.value = [];
-    return;
-  }
+const handleFolderClicked = (folder) => {
+  searchQuery.value = "";
+  selectedFolder.value = folder;
+};
 
+const fetchFilesAndFolders = async (parentId, query) => {
   try {
     const foldersResponse = await fetch(
-      `http://localhost:3000/folders?parentId=${selectedFolder.value.id}`
+      `http://localhost:3000/folders?parentId=${parentId}${
+        query ? `&search=${query}` : ""
+      }`
     );
     const folders = await foldersResponse.json();
 
     const filesResponse = await fetch(
-      `http://localhost:3000/files?folderId=${selectedFolder.value.id}`
+      `http://localhost:3000/files?folderId=${parentId}${
+        query ? `&search=${query}` : ""
+      }`
     );
     const files = await filesResponse.json();
 
-    filteredFilesAndFolders.value = [
+    return [
       ...folders.map((folder) => ({
         ...folder,
         type: "folder",
@@ -149,10 +153,20 @@ watchEffect(async () => {
     ];
   } catch (error) {
     console.error("Failed to fetch folders or files:", error);
+    return [];
   }
-});
-
-const handleFolderClicked = (folder) => {
-  selectedFolder.value = folder;
 };
+
+const updateFilesAndFolders = async () => {
+  if (!selectedFolder.value?.id) {
+    filteredFilesAndFolders.value = [];
+    return;
+  }
+  filteredFilesAndFolders.value = await fetchFilesAndFolders(
+    selectedFolder.value.id,
+    searchQuery.value
+  );
+};
+
+watch([selectedFolder, searchQuery], updateFilesAndFolders);
 </script>
