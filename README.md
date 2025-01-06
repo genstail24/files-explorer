@@ -19,15 +19,15 @@ A simple files explorer application with:
 3. Install dependencies for both backend and frontend:
    ```bash
    bun install
-4. Set up the database credentials in the backend/.env file:
+4. Copy .env.example in backend and frontend to .env:
+   ```bash
+   cp backend/.env.example backend/.env && cp frontend/.env.example frontend/.env
+5. Set up the database credentials in the backend/.env file:
    ```bash
    DATABASE_URL="mysql://root:@localhost:3306/file_explorer"
-5. Run the database migration:
+6. Run prisma generate, migrate, and seed in 1 command for the first time (TESTING PURPOSE ONLY!):
    ```bash
-   bun run migrate
-6. Run the database seeder:
-   ```bash
-   bun run seed
+   bun run setup-db
 7. Run the start dev command:
    ```bash
    bun run dev
