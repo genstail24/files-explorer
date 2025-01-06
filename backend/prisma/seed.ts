@@ -9,10 +9,10 @@ async function main() {
   const rootFolder = await prisma.folder.create({
     data: {
       name: 'Root',
-      children: {
+      subFolders: {
         create: Array.from({ length: 10 }, (_, i) => ({
           name: `Folder_${i + 1}`,
-          children: {
+          subFolders: {
             create: Array.from({ length: 10 }, (_, j) => ({
               name: `Subfolder_${i + 1}_${j + 1}`,
             })),
@@ -21,9 +21,9 @@ async function main() {
       },
     },
     include: {
-      children: {
+      subFolders: {
         include: {
-          children: true,
+          subFolders: true,
         },
       },
     },
