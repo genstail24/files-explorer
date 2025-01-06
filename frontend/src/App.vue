@@ -15,6 +15,7 @@
         <!-- Right Panel: Files and Search -->
         <FileList
           :filteredFilesAndFolders="filteredFilesAndFolders"
+          :selectedFolder="selectedFolder"
           v-model="searchQuery"
           @onFolderItemClicked="handleFolderItemClicked"
         />
@@ -31,7 +32,10 @@ import TopBar from "./components/TopBar.vue";
 
 const isDarkMode = ref(false);
 const folders = ref([]);
-const selectedFolder = ref(null);
+const selectedFolder = ref({
+  name: "None",
+  count: 0,
+});
 const searchQuery = ref("");
 const filteredFilesAndFolders = ref([]);
 
