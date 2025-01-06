@@ -2,7 +2,7 @@
   <div>
     <div class="text-black dark:text-white cursor-pointer flex items-center">
       <!-- Folder Item (Icon and Name) -->
-      <div class="flex items-center" @click="onClick(folder)">
+      <div class="flex items-center hover:bg-gray-300 dark:hover:bg-gray-600 px-2" @click="onClick(folder)">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -52,7 +52,7 @@
   
 <script setup>
 import { ref } from "vue";
-import FolderItem from "./FolderItem.vue";
+import FolderItem from "./FolderTreeItem.vue";
 
 const props = defineProps({
   folder: Object,
