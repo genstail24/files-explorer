@@ -102,6 +102,7 @@ export default new Elysia()
         body: t.Object({
           name: t.String(),
           folderId: t.Numeric(),
+          type: t.String(),
         }),
       })
       .put("/files/:id", async ({ params, body }) => {
@@ -113,6 +114,7 @@ export default new Elysia()
         body: t.Object({
           name: t.String(),
           folderId: t.Numeric(),
+          type: t.String(),
         }),
       })
       .delete("/files/:id", async ({ params }) => {

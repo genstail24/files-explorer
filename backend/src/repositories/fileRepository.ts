@@ -26,11 +26,11 @@ export const getById = async (id: number) => {
   return await db.file.findUnique({ where: { id } });
 };
 
-export const create = async (fileData: { name: string; parentId?: number }) => {
+export const create = async (fileData: { name: string; folderId?: number; type?: string }) => {
   return await db.file.create({ data: fileData });
 };
 
-export const update = async (id: number, fileData: { name: string; parentId?: number }) => {
+export const update = async (id: number, fileData: { name: string; folderId?: number; type?: string }) => {
   return await db.file.update({ where: { id }, data: fileData });
 };
 

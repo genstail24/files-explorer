@@ -13,11 +13,11 @@ export const getFileById = async (id: number) => {
   return await fileRepo.getById(id);
 };
 
-export const createFile = async (fileData: { name: string; folderId: number }) => {
+export const createFile = async (fileData: { name: string; folderId: number; type?: string }) => {
   return await fileRepo.create(fileData);
 };
 
-export const updateFile = async (id: number, fileData: { name: string; folderId: number }) => {
+export const updateFile = async (id: number, fileData: { name: string; folderId: number; type?: string }) => {
   return await fileRepo.update(id, fileData);
 };
 
