@@ -1,7 +1,12 @@
 import * as fileRepo from "../repositories/fileRepository";
 
-export const getAllFiles = async () => {
-  return await fileRepo.getAll();
+export const getAllFiles = async ({
+  sortBy = "name",
+  order = "asc",
+  search = null,
+  folderId = null
+}) => {
+  return await fileRepo.getAll({ sortBy, order, search, folderId });
 };
 
 export const getFileById = async (id: number) => {

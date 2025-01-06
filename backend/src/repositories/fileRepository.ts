@@ -1,8 +1,26 @@
 import { db } from "../utils/db";
 
-export const getAll = async () => {
-  return await db.file.findMany();
+export const getAll = async ({
+  sortBy,
+  order,
+  search,
+  folderId,
+}: {
+  sortBy: string;
+  order: "asc" | "desc";
+  search: string | null;
+  folderId?: number | null;
+}) => {
+  return await db.file.findMany({
+    where: {
+      ...(search !== undefined && search !== null ? { name: {
+        contains: search,
+      } } : {}),
+      ...(folderId !== undefined && folderId !== null ? { folderId } : {}),
+    }
+  })
 };
+
 
 export const getById = async (id: number) => {
   return await db.file.findUnique({ where: { id } });

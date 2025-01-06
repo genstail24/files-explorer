@@ -8,11 +8,10 @@ export default new Elysia()
     async ({ query }) => {
       const { sortBy, order, search, parentId } = query;
 
-      // Default values
-      const sortField = sortBy || "name"; // Default sorting by "name"
-      const sortOrder = order === "desc" ? "desc" : "asc"; // Default order is "asc"
-      const searchQuery = search ? search.toString() : null; // Optional search query
-      const parent = parentId ? Number(parentId) : null; // Optional parentId filter
+      const sortField = sortBy || "name";
+      const sortOrder = order === "desc" ? "desc" : "asc";
+      const searchQuery = search ? search.toString() : null;
+      const parent = parentId ? Number(parentId) : null;
 
       return await folderService.getAllFolders({
         sortBy: sortField,
@@ -23,10 +22,10 @@ export default new Elysia()
     },
     {
       query: t.Object({
-        sortBy: t.Optional(t.String()), // e.g., "name", "createdAt"
-        order: t.Optional(t.String()), // Sorting order
-        search: t.Optional(t.String()), // Search keyword
-        parentId: t.Optional(t.Numeric()), // Filter by parentId
+        sortBy: t.Optional(t.String()),
+        order: t.Optional(t.String()),
+        search: t.Optional(t.String()),
+        parentId: t.Optional(t.Numeric()),
       }),
     })
   .get("/folders/:id", async ({ params }) => {
@@ -64,9 +63,30 @@ export default new Elysia()
   })
 
   // File Routes
-  .get("/files", async () => {
-    return await fileService.getAllFiles();
-  })
+  .get("/files",
+    async ({ query }) => {
+      const { sortBy, order, search, folderId } = query;
+
+      const sortField = sortBy || "name";
+      const sortOrder = order === "desc" ? "desc" : "asc";
+      const searchQuery = search ? search.toString() : null;
+      const folder = folderId ? Number(folderId) : null;
+
+      return await fileService.getAllFiles({
+        sortBy: sortField,
+        order: sortOrder,
+        search: searchQuery,
+        folderId: folder,
+      });
+    },
+    {
+      query: t.Object({
+        sortBy: t.Optional(t.String()),
+        order: t.Optional(t.String()),
+        search: t.Optional(t.String()),
+        folderId: t.Optional(t.Numeric()),
+      }),
+    })
   .get("/files/:id", async ({ params }) => {
     return await fileService.getFileById(params.id);
   }, {
