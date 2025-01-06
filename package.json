@@ -1,0 +1,14 @@
+{
+    "name": "windows-explorer",
+    "private": true,
+    "workspaces": [
+        "backend",
+        "frontend"
+    ],
+    "devDependencies": {
+        "concurrently": "^9.1.2"
+    },
+    "scripts": {
+        "dev": "concurrently \"bun --filter=\"backend\" run dev\" \"bun --filter=\"frontend\" run dev\""
+    }
+}
