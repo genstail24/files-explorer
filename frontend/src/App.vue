@@ -29,6 +29,9 @@ import { ref, computed, onMounted, watchEffect, watch } from "vue";
 import FolderTree from "./components/FolderTree.vue";
 import FileList from "./components/FileList.vue";
 import TopBar from "./components/TopBar.vue";
+import {
+  env
+} from './config';
 
 const isDarkMode = ref(false);
 const folders = ref([]);
@@ -40,9 +43,9 @@ const searchQuery = ref("");
 const filteredFilesAndFolders = ref([]);
 
 onMounted(() => {
-  fetch("http://localhost:3000/folders?parentId=1")
+  fetch(`${env.BASE_API_URL}/folders?parentId=1`)
     .then((response) => response.json())
-    .then((response) => (folders.value = response));
+    .then((response) => (folders.value = response.data));
 });
 
 const toggleDarkMode = () => {
@@ -57,25 +60,25 @@ const handleFolderItemClicked = (folder) => {
 const fetchFilesAndFolders = async (parentId, query) => {
   try {
     const foldersResponse = await fetch(
-      `http://localhost:3000/folders?parentId=${parentId}${
+      `${env.BASE_API_URL}/folders?parentId=${parentId}${
         query ? `&search=${query}` : ""
       }`
     );
     const folders = await foldersResponse.json();
 
     const filesResponse = await fetch(
-      `http://localhost:3000/files?folderId=${parentId}${
+      `${env.BASE_API_URL}/files?folderId=${parentId}${
         query ? `&search=${query}` : ""
       }`
     );
     const files = await filesResponse.json();
 
     return [
-      ...folders.map((folder) => ({
+      ...folders.data.map((folder) => ({
         ...folder,
         type: "folder",
       })),
-      ...files.map((file) => ({
+      ...files.data.map((file) => ({
         ...file,
         type: "file",
       })),
