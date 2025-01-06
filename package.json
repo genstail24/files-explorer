@@ -10,7 +10,6 @@
     },
     "scripts": {
         "dev": "concurrently \"bun --filter=\"backend\" run dev\" \"bun --filter=\"frontend\" run dev\"",
-        "migrate": "bun --filter=\"backend\" run migrate-reset",
-        "seed": "bun --filter=\"backend\" run seed"
+        "setup-db": "bun --filter=\"backend\" run setup-db"
     }
 }

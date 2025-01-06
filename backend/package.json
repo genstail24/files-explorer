@@ -4,7 +4,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
-    "migrate-reset": "bun run prisma migrate reset --force",
+    "setup-db": "bun run prisma generate && bun run prisma migrate reset --force && bun run prisma/seed.ts",
     "seed": "bun run prisma/seed.ts"
   },
   "dependencies": {
